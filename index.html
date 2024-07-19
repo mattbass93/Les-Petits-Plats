@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <title>Les petits plats - Homepage</title>
+</head>
+<body>
+    <header class="pb-5">
+        <div class="row mb-5 d-flex justify-content-center justify-content-md-start">
+            <h1 class="col-6 col-md-3 ml-md-25px">            
+                <img class="w-100" src="images/logo.png" alt="Logo du site Les Petits Plats">         
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-8 mx-auto">
+                <h2 class="text-warning text-uppercase text-center py-3">Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10 d-flex mx-auto position-relative">
+                <input autocomplete="off" type="text" class="search-bar form-control py-4" placeholder="Rechercher une recette, un ingrédient, ..." aria-label="Rechercher une recette, un ingrédient,...">
+                <button class="d-flex justify-content-center loop bg-dark btn btn-outline-secondary" type="submit">
+                    <img class="w-75" src="images/loop.png" alt="loupe">
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <main>
+        <div class="container">
+        <!-- Recipe Filters -->
+        <div class="row d-flex align-items-center justify-content-center flex-sm-column flex-md-row gap-sm-2 mb-5 pt-4">
+            <div class="col">
+                <div class="btn-group d-flex flex-column flex-sm-row gap-2" role="group" aria-label="Basic example">
+                    <div class="dropdown">
+                        <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ingrédients
+                        </button>
+                        <ul id="ingredients-filters-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton"></ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Appareil
+                        </button>
+                        <ul id="appliance-filters-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton"> </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ustensiles
+                        </button>
+                        <ul id="ustensils-filters-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col text-end text-sm-center mt-sm-4 mt-md-0 ">
+                <span id="total-nbr-of-recipes" class="mx-auto">0 recettes</span>
+            </div>
+        </div>
+        
+        <div id="card-container" class="row justify-content-center gap-sm-5 gap-lg-5">
+        </div>
+    </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

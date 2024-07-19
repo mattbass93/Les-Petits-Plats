@@ -1,0 +1,91 @@
+/* General styles */
+header {
+    background: url("images/background_home.png");
+    background-size: cover;
+}
+
+h2, #total-nbr-of-recipes, .card-title {
+    font-family: "Anton", sans-serif;
+}
+
+main {
+    background: lightgrey;
+}
+
+/* Search bar */
+.search-bar {
+    border-radius: 10px;
+}
+
+.loop {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    border-radius: 10px;
+    padding: 15px 10px;
+}
+
+/* Button styles */
+.btn-custom {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 160px;
+}
+
+.btn-custom::after {
+    content: url(images/down.png); /* Unicode character for down arrow */
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #000;
+    border-top: 0;
+}
+
+.dropdown-menu {
+    border-radius: 10px;
+}
+
+/* Recipe card styles */
+.recipe-card {
+    border-radius: 20px;  
+}
+
+.recipe-card img {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.recipe-card .recipe-time {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.recipe-card .card-ingredients, .recipe-card .card-ustensils {
+    margin-top: auto; /* Pousse ces sections vers le bas */
+}
+
+/*MEDIA QUERIES*/
+@media (min-width: 768px) {
+    .ml-md-25px {
+        margin-left: 25px;
+    }
+}
+
+@media (min-width: 992px) {
+    .gap-lg-10px {
+        gap: 2;
+    }
+}
