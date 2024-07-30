@@ -10,6 +10,8 @@ const ingredientsFiltersList = document.getElementById("ingredients-filters-list
 const applianceFiltersList = document.getElementById("appliance-filters-list");
 const ustensilsFiltersList = document.getElementById("ustensils-filters-list");
 
+const filtersActiveList = document.getElementById("filters-active-list");
+
 // Function to create the list of recipes
 function createRecipesList(recipes) {
     cardContainer.innerHTML = "";  // Clear the card container before adding new recipes
@@ -70,8 +72,52 @@ function generateFilters(recipes, filterType, filterList, filterFunction) {
     });
 }
 
+// Function to add active filter
+function addActiveFilter(filterType, filterItem) {
+    const filterId = `${filterItem.toLowerCase().replace(/ /g, '-')}-active`;
+    if (!document.getElementById(filterId)) {
+        const activeFilterElement = document.createElement('span');
+        activeFilterElement.id = filterId;
+        activeFilterElement.classList.add("col-3", "btn", "btn-custom", "filter-active", "bg-warning", "mb-5",);
+        activeFilterElement.innerText = filterItem;
+        activeFilterElement.addEventListener("click", () => {
+            activeFilterElement.remove();
+            // Add logic to handle filter removal and update the recipe list accordingly
+            removeFilterAndUpdateRecipes(filterType, filterItem);
+        });
+        filtersActiveList.appendChild(activeFilterElement);
+    }
+}
+
+// Function to remove a filter and update the recipe list
+function removeFilterAndUpdateRecipes(filterType, filterItem) {
+    let filteredArray = [...recipes];
+    // Reapply all active filters except the one removed
+    document.querySelectorAll('#filters-active-list .badge').forEach(activeFilter => {
+        const activeFilterText = activeFilter.innerText;
+        if (activeFilterText !== filterItem) {
+            if (filterType === 'ingredients') {
+                filteredArray = filteredArray.filter(recipe =>
+                    recipe.ingredients.some(item => item.ingredient === activeFilterText)
+                );
+            } else if (filterType === 'appliance') {
+                filteredArray = filteredArray.filter(recipe =>
+                    recipe.appliance === activeFilterText
+                );
+            } else if (filterType === 'ustensils') {
+                filteredArray = filteredArray.filter(recipe =>
+                    recipe.ustensils.includes(activeFilterText)
+                );
+            }
+        }
+    });
+    createRecipesList(filteredArray);
+    updateFilters(filteredArray);
+}
+
 // Specific filter functions
 function filterByIngredient(ingredient) {
+    addActiveFilter('ingredients', ingredient);
     const filteredArray = recipes.filter(recipe =>
         recipe.ingredients.some(item => item.ingredient === ingredient)
     );
@@ -80,6 +126,7 @@ function filterByIngredient(ingredient) {
 }
 
 function filterByAppliance(appliance) {
+    addActiveFilter('appliance', appliance);
     const filteredArray = recipes.filter(recipe =>
         recipe.appliance === appliance
     );
@@ -88,6 +135,7 @@ function filterByAppliance(appliance) {
 }
 
 function filterByUstensil(ustensil) {
+    addActiveFilter('ustensils', ustensil);
     const filteredArray = recipes.filter(recipe =>
         recipe.ustensils.includes(ustensil)
     );

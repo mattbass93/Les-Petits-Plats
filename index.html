@@ -8,12 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon.png" type="image/png">
     <title>Les petits plats - Homepage</title>
 </head>
 <body>
     <header class="pb-5">
         <div class="row mb-5 d-flex justify-content-center justify-content-md-start">
-            <h1 class="col-6 col-md-3 ml-md-25px">            
+            <h1 class="col-6 col-md-3 col-xl-2 ml-md-25px">            
                 <img class="w-100" src="images/logo.png" alt="Logo du site Les Petits Plats">         
             </h1>
         </div>
@@ -36,8 +37,8 @@
     <main>
         <div class="container">
         <!-- Recipe Filters -->
-        <div class="row d-flex align-items-center justify-content-center flex-sm-column flex-md-row gap-sm-2 mb-5 pt-4">
-            <div class="col">
+        <div class="row d-flex align-items-center justify-content-center flex-sm-column flex-md-row gap-sm-2 mb-2 pt-4">
+            <div class="col ml-md-25px ml-lg-45px ml-xl-60px ml-xxl-105px ">
                 <div class="btn-group d-flex flex-column flex-sm-row gap-2" role="group" aria-label="Basic example">
                     <div class="dropdown">
                         <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -60,9 +61,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col text-end text-sm-center mt-sm-4 mt-md-0 ">
+            <div class="col col-md-2 text-end text-sm-center mt-sm-4 mt-md-0 ">
                 <span id="total-nbr-of-recipes" class="mx-auto">0 recettes</span>
             </div>
+        </div>
+        <div id="filters-active-list" class="row d-flex align-items-center justify-content-center flex-md-row gap-sm-2 mb-2 pt-4">
         </div>
         
         <div id="card-container" class="row justify-content-center gap-sm-5 gap-lg-5">

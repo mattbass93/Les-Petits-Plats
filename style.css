@@ -40,11 +40,20 @@ main {
 }
 
 .btn-custom::after {
-    content: url(images/down.png); /* Unicode character for down arrow */
+    content: url(images/down.png);
     margin-left: auto;
     font-size: 0.8rem;
     color: #000;
     border-top: 0;
+}
+
+
+.filter-active::after {
+    content: url(images/x.png);
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #000;
+    border-top: 0
 }
 
 .dropdown-menu {
@@ -82,10 +91,27 @@ main {
     .ml-md-25px {
         margin-left: 25px;
     }
+
+    
 }
 
 @media (min-width: 992px) {
-    .gap-lg-10px {
-        gap: 2;
+
+    .ml-lg-45px {
+        margin-left: 45px
+    }
+}
+
+@media(min-width: 1200px) {
+
+    .ml-xl-60px {
+        margin-left: 60px
+    }
+}
+
+@media(min-width: 1400px) {
+
+    .ml-xxl-105px {
+        margin-left: 105px
     }
 }
