@@ -1,16 +1,20 @@
 import { recipes } from "./recipes.js";
 console.log(recipes);
 
-// DOM elements
 const cardContainer = document.getElementById("card-container");
-let totalNbrOfRecipes = document.getElementById("total-nbr-of-recipes");
+const totalNbrOfRecipes = document.getElementById("total-nbr-of-recipes");
 const searchInput = document.querySelector(".search-bar");
 
 const ingredientsFiltersList = document.getElementById("ingredients-filters-list");
 const applianceFiltersList = document.getElementById("appliance-filters-list");
 const ustensilsFiltersList = document.getElementById("ustensils-filters-list");
-
 const filtersActiveList = document.getElementById("filters-active-list");
+
+const activeFilters = {
+    ingredients: new Set(),
+    appliance: new Set(),
+    ustensils: new Set()
+};
 
 // Function to create the list of recipes
 function createRecipesList(recipes) {
@@ -47,128 +51,95 @@ function createRecipesList(recipes) {
 }
 
 // Generic function to generate filters
-function generateFilters(recipes, filterType, filterList, filterFunction) {
-    filterList.innerHTML = ''; // Clear the existing filters
-
+function generateFilters(recipes, filterType, filterList, filterFunction, activeFilterSet) {
     const filterSet = new Set();
-
     recipes.forEach(recipe => {
         if (filterType === 'ingredients') {
-            recipe.ingredients.forEach(item => filterSet.add(item.ingredient));
+            recipe.ingredients.forEach(item => !activeFilterSet.has(item.ingredient) && filterSet.add(item.ingredient));
         } else if (filterType === 'appliance') {
-            filterSet.add(recipe.appliance);
+            !activeFilterSet.has(recipe.appliance) && filterSet.add(recipe.appliance);
         } else if (filterType === 'ustensils') {
-            recipe.ustensils.forEach(item => filterSet.add(item));
+            recipe.ustensils.forEach(item => !activeFilterSet.has(item) && filterSet.add(item));
         }
     });
 
+    filterList.innerHTML = "";
     filterSet.forEach(filterItem => {
         const filterElement = document.createElement('li');
         filterElement.innerHTML = `<a id="${filterItem.toLowerCase().replace(/ /g, '-')}-filter" class="dropdown-item" href="#">${filterItem}</a>`;
         filterList.appendChild(filterElement);
 
-        // Add event listener to each filter
         filterElement.addEventListener("click", () => filterFunction(filterItem));
     });
 }
 
-// Function to add active filter
 function addActiveFilter(filterType, filterItem) {
     const filterId = `${filterItem.toLowerCase().replace(/ /g, '-')}-active`;
     if (!document.getElementById(filterId)) {
         const activeFilterElement = document.createElement('span');
         activeFilterElement.id = filterId;
-        activeFilterElement.classList.add("col-3", "btn", "btn-custom", "filter-active", "bg-warning", "mb-5",);
+        activeFilterElement.classList.add("col-3", "btn", "btn-custom", "filter-active", "bg-warning", "mb--md-5");
         activeFilterElement.innerText = filterItem;
+        activeFilters[filterType].add(filterItem);
         activeFilterElement.addEventListener("click", () => {
             activeFilterElement.remove();
-            // Add logic to handle filter removal and update the recipe list accordingly
-            removeFilterAndUpdateRecipes(filterType, filterItem);
+            activeFilters[filterType].delete(filterItem);
+            updateFilteredRecipes();
         });
         filtersActiveList.appendChild(activeFilterElement);
     }
 }
 
-// Function to remove a filter and update the recipe list
-function removeFilterAndUpdateRecipes(filterType, filterItem) {
-    let filteredArray = [...recipes];
-    // Reapply all active filters except the one removed
-    document.querySelectorAll('#filters-active-list .badge').forEach(activeFilter => {
-        const activeFilterText = activeFilter.innerText;
-        if (activeFilterText !== filterItem) {
-            if (filterType === 'ingredients') {
-                filteredArray = filteredArray.filter(recipe =>
-                    recipe.ingredients.some(item => item.ingredient === activeFilterText)
-                );
-            } else if (filterType === 'appliance') {
-                filteredArray = filteredArray.filter(recipe =>
-                    recipe.appliance === activeFilterText
-                );
-            } else if (filterType === 'ustensils') {
-                filteredArray = filteredArray.filter(recipe =>
-                    recipe.ustensils.includes(activeFilterText)
-                );
-            }
-        }
+function applyFilters(recipes) {
+    return recipes.filter(recipe => {
+        const matchesIngredients = [...activeFilters.ingredients].every(filter => recipe.ingredients.some(ing => ing.ingredient === filter));
+        const matchesAppliance = [...activeFilters.appliance].every(filter => recipe.appliance === filter);
+        const matchesUstensils = [...activeFilters.ustensils].every(filter => recipe.ustensils.includes(filter));
+        return matchesIngredients && matchesAppliance && matchesUstensils;
     });
+}
+
+function applySearch(recipes, searchString) {
+    return recipes.filter(recipe => {
+        const searchLower = searchString.toLowerCase();
+        return recipe.name.toLowerCase().includes(searchLower) ||
+            recipe.description.toLowerCase().includes(searchLower) ||
+            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchLower));
+    });
+}
+
+function updateFilteredRecipes() {
+    let filteredArray = applyFilters(recipes);
+    const searchString = searchInput.value.toLowerCase();
+    if (searchString.length >= 3) {
+        filteredArray = applySearch(filteredArray, searchString);
+    }
     createRecipesList(filteredArray);
     updateFilters(filteredArray);
 }
 
-// Specific filter functions
 function filterByIngredient(ingredient) {
     addActiveFilter('ingredients', ingredient);
-    const filteredArray = recipes.filter(recipe =>
-        recipe.ingredients.some(item => item.ingredient === ingredient)
-    );
-    createRecipesList(filteredArray);
-    updateFilters(filteredArray);
+    updateFilteredRecipes();
 }
 
 function filterByAppliance(appliance) {
     addActiveFilter('appliance', appliance);
-    const filteredArray = recipes.filter(recipe =>
-        recipe.appliance === appliance
-    );
-    createRecipesList(filteredArray);
-    updateFilters(filteredArray);
+    updateFilteredRecipes();
 }
 
 function filterByUstensil(ustensil) {
     addActiveFilter('ustensils', ustensil);
-    const filteredArray = recipes.filter(recipe =>
-        recipe.ustensils.includes(ustensil)
-    );
-    createRecipesList(filteredArray);
-    updateFilters(filteredArray);
+    updateFilteredRecipes();
 }
 
-// Function to update filters
 function updateFilters(recipes) {
-    generateFilters(recipes, 'ingredients', ingredientsFiltersList, filterByIngredient);
-    generateFilters(recipes, 'appliance', applianceFiltersList, filterByAppliance);
-    generateFilters(recipes, 'ustensils', ustensilsFiltersList, filterByUstensil);
+    generateFilters(recipes, 'ingredients', ingredientsFiltersList, filterByIngredient, activeFilters.ingredients);
+    generateFilters(recipes, 'appliance', applianceFiltersList, filterByAppliance, activeFilters.appliance);
+    generateFilters(recipes, 'ustensils', ustensilsFiltersList, filterByUstensil, activeFilters.ustensils);
 }
 
-// Initialize the page with all recipes, ingredient filters, appliance filters, and ustensil filters
 createRecipesList(recipes);
 updateFilters(recipes);
 
-// Search functionality
-searchInput.addEventListener("input", filterData);
-
-function filterData(e) {
-    const searchedString = e.target.value.toLowerCase();
-    if (searchedString.length < 3) {
-        createRecipesList(recipes);  // Show all recipes if less than 3 characters are typed
-        updateFilters(recipes);
-        return;
-    }
-    const filteredArray = recipes.filter(recipe =>
-        recipe.name.toLowerCase().includes(searchedString) ||
-        recipe.description.toLowerCase().includes(searchedString) ||
-        recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedString))
-    );
-    createRecipesList(filteredArray);
-    updateFilters(filteredArray);
-}
+searchInput.addEventListener("input", updateFilteredRecipes);

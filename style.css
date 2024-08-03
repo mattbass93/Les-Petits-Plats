@@ -53,7 +53,8 @@ main {
     margin-left: auto;
     font-size: 0.8rem;
     color: #000;
-    border-top: 0
+    border-top: 0;
+    margin-top: 4px;
 }
 
 .dropdown-menu {
@@ -87,11 +88,18 @@ main {
 }
 
 /*MEDIA QUERIES*/
+@media (min-width: 576px) {
+    .ml-sm-10px {
+        margin-left: 10px;
+    }
+
+    
+}
+
 @media (min-width: 768px) {
     .ml-md-25px {
         margin-left: 25px;
     }
-
     
 }
 
