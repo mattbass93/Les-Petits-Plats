@@ -90,8 +90,10 @@ function addActiveFilter(filterType, filterItem) {
     }
 }
 
+//Filtre la recette en fonction des filtres actifs
 function applyFilters(recipes) {
     return recipes.filter(recipe => {
+        //.every vérifie si tous les filtres actifs est présent dans les ingrédients de la recette et .some vérifie qu'au moins un ingrédient correspond au filtre actif
         const matchesIngredients = [...activeFilters.ingredients].every(filter => recipe.ingredients.some(ing => ing.ingredient === filter));
         const matchesAppliance = [...activeFilters.appliance].every(filter => recipe.appliance === filter);
         const matchesUstensils = [...activeFilters.ustensils].every(filter => recipe.ustensils.includes(filter));
@@ -108,6 +110,7 @@ function applySearch(recipes, searchString) {
     });
 }
 
+//MAJ des recettes filtrées
 function updateFilteredRecipes() {
     let filteredArray = applyFilters(recipes);
     const searchString = searchInput.value.toLowerCase();
@@ -133,6 +136,7 @@ function filterByUstensil(ustensil) {
     updateFilteredRecipes();
 }
 
+//MAJ des filtres
 function updateFilters(recipes) {
     generateFilters(recipes, 'ingredients', ingredientsFiltersList, filterByIngredient, activeFilters.ingredients);
     generateFilters(recipes, 'appliance', applianceFiltersList, filterByAppliance, activeFilters.appliance);
