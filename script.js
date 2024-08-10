@@ -18,36 +18,36 @@ const activeFilters = {
 
 // Function to create the list of recipes
 function createRecipesList(recipes) {
-    cardContainer.innerHTML = "";  // Clear the card container before adding new recipes
-    recipes.forEach(recipeCard => {
-        const { time, name, image, description, ingredients } = recipeCard;
+    cardContainer.innerHTML = ""; // Vide le conteneur avant d'y ajouter de nouvelles recettes
+    for (let i = 0; i < recipes.length; i++) {
+        const recipeCard = recipes[i]; // Récupère chaque recette individuellement
+        const { time, name, image, description, ingredients } = recipeCard; // Destructuring pour extraire les propriétés de la recette
 
-        // Create a new div for each recipe
+        // Création d'un nouvel élément div pour chaque recette
         const recipeDiv = document.createElement('div');
-        recipeDiv.classList.add("card", "recipe-card", "p-0", "col-11", "col-md-5", "col-xl-5", "col-xxl-3");  // Bootstrap grid classes
+        recipeDiv.classList.add("card", "recipe-card", "p-0", "col-11", "col-md-5", "col-xl-5", "col-xxl-3"); // Ajout de classes Bootstrap pour le layout
         recipeDiv.innerHTML = `
-                <div class="recipe-time bg-warning text-dark">${time} min</div>
-                <img src="images_recettes/${image}" class="card-img-top mb-3" alt="${name}">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">${name}</h5>
-                    <div class="mb-2 text-secondary">Recette</div>
-                    <p id="card-text" class="mb-4 card-text">${description}</p>
-                    <div class="mb-2 text-secondary">Ingrédients</div>
-                    <div class="card-ingredients d-flex gap-3 flex-wrap mb-5">
-                        ${ingredients.map(ingredient => `
-                            <div class="ingredient d-flex flex-column col-5">
-                                <span class="ingredient-name">${ingredient.ingredient}</span>
-                                ${ingredient.quantity ? `<span class="ingredient-quantity text-secondary">${ingredient.quantity} ${ingredient.unit ? ingredient.unit : ''}</span>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
+            <div class="recipe-time bg-warning text-dark">${time} min</div>
+            <img src="images_recettes/${image}" class="card-img-top mb-3" alt="${name}">
+            <div class="card-body">
+                <h5 class="card-title mb-3">${name}</h5>
+                <div class="mb-2 text-secondary">Recette</div>
+                <p id="card-text" class="mb-4 card-text">${description}</p>
+                <div class="mb-2 text-secondary">Ingrédients</div>
+                <div class="card-ingredients d-flex gap-3 flex-wrap mb-5">
+                    ${ingredients.map(ingredient => `
+                        <div class="ingredient d-flex flex-column col-5">
+                            <span class="ingredient-name">${ingredient.ingredient}</span>
+                            ${ingredient.quantity ? `<span class="ingredient-quantity text-secondary">${ingredient.quantity} ${ingredient.unit ? ingredient.unit : ''}</span>` : ''}
+                        </div>
+                    `).join('')}
                 </div>
-            
+            </div>
         `;
 
-        cardContainer.appendChild(recipeDiv);
-    });
-    totalNbrOfRecipes.innerText = `${recipes.length} recettes`;
+        cardContainer.appendChild(recipeDiv); // Ajoute la carte de recette au conteneur
+    }
+    totalNbrOfRecipes.innerText = `${recipes.length} recettes`; // Met à jour le nombre total de recettes affiché
 }
 
 // Generic function to generate filters
