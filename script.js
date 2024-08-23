@@ -147,12 +147,21 @@ function applyFilters(recipes) {
 }
 
 function applySearch(recipes, searchString) {
-    return recipes.filter(recipe => {
-        const searchLower = searchString.toLowerCase();
-        return recipe.name.toLowerCase().includes(searchLower) ||
+    const result = [];
+    const searchLower = searchString.toLowerCase();
+
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+        if (
+            recipe.name.toLowerCase().includes(searchLower) ||
             recipe.description.toLowerCase().includes(searchLower) ||
-            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchLower));
-    });
+            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchLower))
+        ) {
+            result.push(recipe);
+        }
+    }
+
+    return result;
 }
 
 //MAJ des recettes filtrées
